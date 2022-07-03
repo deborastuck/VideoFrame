@@ -4,6 +4,7 @@
 import cv2
 import json
 import os
+import sys
 from pathlib import Path
 from src.globLabelVideo import GlobLabelVideo
 
@@ -22,10 +23,12 @@ class GifEventFrame:
             self.video_extension = ".mkv"
         else:
             self.video_extension = video_ext
-        if search_in_path == "":
-            self.search_in_path = str(Path(__file__).parents[2])
-        else:
+        if search_in_path != "":
             self.search_in_path = search_in_path
+        elif getattr(sys, 'frozen', False):
+            self.search_in_path = os.path.dirname(sys.executable)
+        else:
+            self.search_in_path = str(Path(__file__).parents[2])
         self.action = action
         if sec_start == "":
             self.sec_start = 0
@@ -74,7 +77,7 @@ class GifEventFrame:
         :param new_dir_gif: String
         :return String (success or error)
         """
-        response = "Success!"
+        response = "Success1"
         for file_path in label_files:
             json_file = open(file_path)
             data = json.load(json_file)

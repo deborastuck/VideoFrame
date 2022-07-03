@@ -1,9 +1,9 @@
 # @Author: Debora Stuck
 # @Time: 06.2022
 
-import pathlib
 import cv2
 import os
+import sys
 from pathlib import Path
 from src.globLabelVideo import GlobLabelVideo
 
@@ -22,10 +22,12 @@ class Frame:
             self.video_extension = '.mkv'
         else:
             self.video_extension = video_ext
-        if search_in_path == "":
-            self.search_in_path = str(pathlib.Path(__file__).parents[2])
-        else:
+        if search_in_path != "":
             self.search_in_path = search_in_path
+        elif getattr(sys, 'frozen', False):
+            self.search_in_path = os.path.dirname(sys.executable)
+        else:
+            self.search_in_path = str(Path(__file__).parents[2])
         self.g = GlobLabelVideo()
 
     def create_frame(self):
